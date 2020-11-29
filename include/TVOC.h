@@ -1,0 +1,2 @@
+boolean TVOCinit();
+int TVOCread();
