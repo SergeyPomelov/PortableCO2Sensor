@@ -8,6 +8,7 @@ const byte s8_co2[8] = {0xfe, 0x04, 0x00, 0x03, 0x00, 0x01, 0xd5, 0xc5};
 const byte s8_fwver[8] = {0xfe, 0x04, 0x00, 0x1c, 0x00, 0x01, 0xe4, 0x03};
 const byte s8_id_hi[8] = {0xfe, 0x04, 0x00, 0x1d, 0x00, 0x01, 0xb5, 0xc3};
 const byte s8_id_lo[8] = {0xfe, 0x04, 0x00, 0x1e, 0x00, 0x01, 0x45, 0xc3};
+const byte s8_id_lol[8] = {0xfe, 0x04, 0x00, 0x00, 0x00, 0x04, 0xe5, 0xc3};
 SoftwareSerial swSer(S8_RX, S8_TX, false); // RX, TX
 byte buf[10];
 
@@ -92,7 +93,8 @@ uint16_t Co2read()
   else
   {
     co2Value = co2;
-    // Serial.printf("%02x %02x %02x %02x %02x %02x %02x\n", buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6]);
+    Serial.printf("%02x %02x %02x %02x %02x %02x %02x\n", buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6]);
+    Serial.println(co2Value);
   }
   return co2;
 }

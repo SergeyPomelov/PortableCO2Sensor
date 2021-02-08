@@ -10,7 +10,7 @@ WiFiClient wifi;
 boolean WiFiconnect()
 {
 
-  if (WiFi.status() != WL_CONNECTED && WiFi.SSID() != AP_SSID)
+  if (WiFi.status() != WL_CONNECTED || WiFi.SSID() != AP_SSID)
   {
     Serial.println(F("Initialising Wifi..."));
     WiFi.mode(WIFI_STA);
@@ -76,7 +76,8 @@ void sendDataDomoticz()
   if (WiFi.status() == WL_CONNECTED)
   {
     Serial.print("Domoticz send begin...\n");
-    updateDevice(187U, String(co2Value), true);
-    updateDevice(191U, String((uint16_t)tvocValue.getMedian()), false);
+    updateDevice(187U, String(co2Value), false);
+    updateDevice(190U, String(PM10Reading), false);
+    updateDevice(191U, String((uint16_t)tvocValue.getMedian()), true);
   }
 }

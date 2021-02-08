@@ -31,14 +31,18 @@ void lcdClear()
 
 void lcdUpdateData()
 {
-  uint32_t backlit = (uint32_t) lux30.getAverage(30) * 6U;
+  backlit = (uint32_t)lux30.getAverage(30) * 35U;
+  backlit = (backlit < 1023U) ? (int)backlit : 1023U;
+  backlit = (backlit < 250U) ? 0U : (int)backlit;
+
   lcd.setCursor(0U, 0U);
-  lcd.print(String(dispTemp - 3.3F, 2U) + "C " + String(dispHum, 0U) + "% " + String(dispPres) + "hPa");
+  lcd.print(String(insideTemp, 2U) + "C " + String(insideHum, 0U) + "% " + String(insidePres) + "hPa");
   lcd.setCursor(0U, 1U);
   lcd.print("CO2 " + String(co2Value) + "ppm " + (int)lux.getAverage() + "Lux  ");
   lcd.setCursor(0U, 2U);
   lcd.print("TVOC " + String((uint16_t)tvocValue.getMedian()) + "ppb     ");
   lcd.setCursor(0U, 3U);
   lcd.print("                   ");
-  analogWrite(BACKLIGHT_PIN, backlit < 255U ? (int) backlit : 255U);
+ 
+  analogWrite(BACKLIGHT_PIN, backlit);
 }

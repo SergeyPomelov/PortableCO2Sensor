@@ -6,12 +6,13 @@
 #include <LCD.h>
 #include <BME280.h>
 #include <TVOC.h>
+#include <PM.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <Scanner.h>
 #include <Wire.h>
+#include <Ticker.h>
 
-uint32_t previousDataSendMillis = 0U;
 boolean status = true;
 
 void update()
@@ -24,15 +25,9 @@ void update()
   Co2read();
   lcdUpdateData();
 
-  const uint32_t currentMillis = millis();
-  if (currentMillis - previousDataSendMillis >= INTERVAL_DATA_SEND_MS)
-  {
-    previousDataSendMillis = currentMillis;
-    sendDataDomoticz();
-  }
-
-  Serial.print(String("Temp ") + dispTemp + " Hum " + dispHum + " Press " + dispPres);
-  Serial.println(String(" CO2 ") + co2Value + " TVOC " + TVOCReading + " Lux " + luxReading);
+  Serial.print(String("Temp ") + insideTemp + " Hum " + insideHum + " Press " + insidePres);
+  Serial.print(String(" CO2 ") + co2Value + " TVOC " + TVOCReading + " PM10 " + PM10Reading + " PM25 " + PM25Reading);
+  Serial.println(String(" Backlit ") + backlit + " Lux " + luxReading);
   ESP.wdtFeed();
 }
 
@@ -54,6 +49,11 @@ void initDevice(const String deviceName, const uint8_t displayLine, boolean (*in
   }
 }
 
+Ticker scannerTicker(scanner, 1000, 0, MILLIS);
+Ticker updateTicker(update, 1000, 0, MILLIS);
+Ticker sendDataTicker(sendDataDomoticz, INTERVAL_DATA_SEND_MS, 0, MILLIS);
+Ticker PMTicker(PMread, 10000, 0, MILLIS);
+
 void setup()
 {
 
@@ -69,32 +69,40 @@ void setup()
 
   Serial.print("Startup reason: ");
   Serial.println(ESP.getResetReason());
+  
   lcdInit();
-
+  scannerTicker.start();
+  updateTicker.start();
+  sendDataTicker.start();
+  PMTicker.start();
   initDevice(String("S8"), 0U, Co2init);
   initDevice(String("BME280"), 1U, BME280init);
   initDevice(String("CCS811"), 2U, TVOCinit);
+  initDevice(String("PM"), 3U, PMinit);
   initDevice(String("WiFi"), 3U, WiFiconnect);
+ 
 
   if (status)
   {
-    tvocValue.add(0.0F);
-    ESP.wdtDisable();
-    ESP.wdtEnable(60 * WDTO_1S);
     lcdClear();
   }
   else
   {
     Serial.println(F("Self-check failed"));
-    while (true)
-      delay(100);
+    //while (true)
+    //  delay(100);
   }
+  tvocValue.add(0.0F);
+  ESP.wdtDisable();
+  ESP.wdtEnable(60 * WDTO_1S);
+  lcdClear();
   digitalWrite(LED_BUILTIN, LOW);
 }
 
 void loop()
 {
-  // scanner();
-  update();
-  delay(1000);
+  scannerTicker.update();
+  updateTicker.update();
+  sendDataTicker.update();
+  PMTicker.update();
 }

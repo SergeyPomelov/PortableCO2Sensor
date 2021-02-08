@@ -42,7 +42,7 @@ int TVOCread()
   int TVOCReading = 0;
   if (ccs.dataAvailable())
   {
-    ccs.setEnvironmentalData(dispHum, dispTemp);
+    ccs.setEnvironmentalData(insideHum, insideTemp);
     ccs.readAlgorithmResults();
     TVOCReading = ccs.getTVOC();
     tvocValue.add((float)TVOCReading);

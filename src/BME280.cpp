@@ -19,7 +19,7 @@ boolean BME280init()
 void BME280read()
 {
   bme.takeForcedMeasurement();
-  dispTemp = bme.readTemperature();
-  dispHum = bme.readHumidity();
-  dispPres = (uint16_t) (bme.readPressure() / 100.0F);
+  insideTemp = bme.readTemperature();
+  insideHum = bme.readHumidity();
+  insidePres = (uint16_t)(bme.readPressure() / 100.0F);
 }
