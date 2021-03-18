@@ -1,5 +1,5 @@
 
-void lcdInit();
+boolean lcdInit();
 
 void lcdClear();
 

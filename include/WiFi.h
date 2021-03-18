@@ -1,2 +1,0 @@
-boolean WiFiconnect();
-void sendDataDomoticz();

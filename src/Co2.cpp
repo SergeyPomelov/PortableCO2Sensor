@@ -59,24 +59,16 @@ boolean Co2init()
   Serial.print("S8 Sensor ID: ");
   swSer.write(s8_id_hi, 8);
   myread(7);
-  Serial.printf("%02x%02x", buf[3], buf[4]);
   swSer.write(s8_id_lo, 8);
   myread(7);
-  Serial.printf("%02x%02x", buf[3], buf[4]);
-  Serial.println("");
-
   swSer.write(s8_fwver, 8);
   myread(7);
-  Serial.printf("S8 Firmware: %d.%d", buf[3], buf[4]);
-  Serial.println();
   return buf[3] == 1U;
 }
 
 uint16_t Co2read()
 {
-  uint16_t crc;
-  uint16_t got;
-  uint16_t co2;
+  uint16_t crc, got, co2;
 
   swSer.write(s8_co2, 8);
   myread(7);
@@ -92,9 +84,10 @@ uint16_t Co2read()
   }
   else
   {
+    // Serial.print("CO2: ");
+    // Serial.println(co2);
     co2Value = co2;
-    Serial.printf("%02x %02x %02x %02x %02x %02x %02x\n", buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6]);
-    Serial.println(co2Value);
+    // Serial.printf("%02x %02x %02x %02x %02x %02x %02x\n", buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6]);
   }
   return co2;
 }

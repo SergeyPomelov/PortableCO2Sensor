@@ -1,14 +1,8 @@
-#include <Secrets.h>
+#include <Arduino.h>
 
 #define DEBUG           true
 #define DISPLAY_ADDR    0x27
-#define ADS1115_ADDR    0x48
-#define CCS811_ADDR     0x5A
-#define LUX_PIN         A0
-#define S8_TX           D3
-#define S8_RX           D4
-#define BACKLIGHT_PIN   D5
-#define PM10_PIN        D7
-#define PM25_PIN        D8
+#define S8_TX           3U
+#define S8_RX           4U
 
-#define INTERVAL_DATA_SEND_MS   60U * 1000U
+#define INTERVAL_UPDATE_MS      1U * 1000U
