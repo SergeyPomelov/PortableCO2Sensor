@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <Constants.h>
 #include <Data.h>
-#include <WiFiConnect.h>
+#include <WiFiFunctions.h>
 #include <BME280.h>
 #include <TVOC.h>
 #include <Scanner.h>
