@@ -39,6 +39,7 @@ boolean TVOCinit()
   {
     printSensorError();
   }
+  tvocValue.add(0.0F);
   return result;
 }
 
@@ -49,8 +50,12 @@ int TVOCread()
   {
     ccs.setEnvironmentalData(insideHum, insideTemp);
     ccs.readAlgorithmResults();
-    TVOCReading = ccs.getTVOC();
-    tvocValue.add((float)TVOCReading);
+    const uint16_t TempTVOCReading = ccs.getTVOC();
+    if (TempTVOCReading < 20000 && TempTVOCReading > 0)
+    {
+      TVOCReading = TempTVOCReading;
+      tvocValue.add((float)TVOCReading);
+    }
     // Serial.print(" TVOC read " + String(tvocValue) + String("temp ") + ccs.getTemperature() + String("co2 ") + ccs.s);
   }
   else if (ccs.checkForStatusError())

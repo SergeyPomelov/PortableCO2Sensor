@@ -3,8 +3,8 @@
 #include <Data.h>
 #include <Ntp.h>
 #include <WiFiFunctions.h>
-#include <WiFi.h>
-#include <HTTPClient.h>
+#include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
 
 HTTPClient http;
@@ -59,6 +59,7 @@ boolean WiFiconnect()
 
 void updateTemp()
 {
+  ESP.wdtFeed();
   String url = "http://" + String(DOMOTICZ_IP) + ":" + DOMOTICZ_PORT + "/json.htm?type=devices&rid=194";
   if (http.begin(wifi, url))
   {
@@ -92,17 +93,18 @@ void updateTemp()
 
 int updateDevice(const uint16_t idx, const String value, const boolean terminal)
 {
-
+  ESP.wdtFeed();
   int httpCode = 0;
   String url = "http://" + String(DOMOTICZ_IP) + ":" + DOMOTICZ_PORT +
                "/json.htm?type=command&param=udevice&idx=" + String(idx) +
                "&nvalue=" + value + "&svalue=" + value;
 
   http.begin(wifi, url);
+  http.setTimeout(3000U);
   http.addHeader("Accept", "*/*");
   http.addHeader("Host", DOMOTICZ_IP);
   http.addHeader("Upgrade-Insecure-Requests", "1");
-  http.addHeader("User-Agent", "ESP32 Weather Station v2");
+  http.addHeader("User-Agent", "ESP8266 Weather Station v3");
 
   if (terminal)
   {
@@ -135,8 +137,9 @@ void sendDataDomoticz()
   if (WiFi.status() == WL_CONNECTED)
   {
     Serial.print("Domoticz send begin...\n");
-    // updateDevice(187U, String(800), false);
-    // updateDevice(190U, String(PM10Reading), false);
+    updateDevice(236U, String(insideTemp, 2), false);
+    updateDevice(237U, String(insideHum, 2), false);
+    updateDevice(187U, String(co2Value), false);
     // updateDevice(191U, String((uint16_t)tvocValue.getMedian()), true);
   }
 }

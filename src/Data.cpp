@@ -9,6 +9,7 @@ uint16_t insidePres;
 RunningMedian lux30(30U);
 RunningMedian lux(5U);
 uint16_t co2Value;
+uint16_t co2Fails;
 RunningMedian tvocValue(5U);
 uint16_t PM10Reading;
 uint16_t PM25Reading;

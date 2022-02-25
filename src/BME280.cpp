@@ -7,7 +7,8 @@ Adafruit_BME280 bme;
 
 boolean BME280init()
 {
-  boolean result = bme.begin(BME280_ADDRESS_ALTERNATE);
+  Wire.begin(SDA, SCL);
+  boolean result = bme.begin(BME280_ADDRESS_ALTERNATE, &Wire);
   bme.setSampling(Adafruit_BME280::MODE_FORCED,
                   Adafruit_BME280::SAMPLING_X1, // temperature
                   Adafruit_BME280::SAMPLING_X1, // pressure

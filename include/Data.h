@@ -8,6 +8,7 @@ extern uint16_t insidePres;
 extern RunningMedian lux;
 extern RunningMedian lux30;
 extern uint16_t co2Value;
+extern uint16_t co2Fails;
 extern RunningMedian tvocValue;
 extern uint16_t PM10Reading;
 extern uint16_t PM25Reading;
