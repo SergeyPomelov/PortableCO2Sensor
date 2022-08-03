@@ -20,7 +20,7 @@ void WiFiinit()
 {
   Serial.print(F("Initialising Wifi "));
   WiFi.mode(WIFI_STA);
-  WiFi.config(IP, GATE, MASK);
+  // WiFi.config(IP, DNS, GATE, MASK);
   WiFi.begin(AP_SSID, AP_PASS);
   WiFi.persistent(true);
   WiFi.setAutoConnect(true);
@@ -29,6 +29,7 @@ void WiFiinit()
 
 boolean WiFiconnect()
 {
+  ESP.wdtFeed();
   if (WiFi.status() != WL_CONNECTED && WiFi.SSID() != AP_SSID)
   {
     WiFiinit();
@@ -40,6 +41,7 @@ boolean WiFiconnect()
   {
     delay(200);
     Serial.print('.');
+    ESP.wdtFeed();
     unsigned long elapsedTime = millis() - startTime;
     if (elapsedTime > 15000)
     {
@@ -140,6 +142,6 @@ void sendDataDomoticz()
     updateDevice(236U, String(insideTemp, 2), false);
     updateDevice(237U, String(insideHum, 2), false);
     updateDevice(187U, String(co2Value), false);
-    // updateDevice(191U, String((uint16_t)tvocValue.getMedian()), true);
+    updateDevice(191U, String((uint16_t)tvocValue.getMedian()), true);
   }
 }

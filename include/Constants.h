@@ -2,7 +2,7 @@
 
 #define DEBUG           true
 #define DEBUG_NTPClient true
-#define DISPLAY_ADDR    0x27
+#define DISPLAY_ADDR    0x3F
 #define ADS1115_ADDR    0x48
 #define CCS811_ADDR     0x5A
 #define LUX_PIN         A0
@@ -17,4 +17,3 @@
 #define INTERVAL_UPDATE_MS      1U   * 1000U
 #define INTERVAL_DATA_SEND_MS   60U  * 1000U
 #define INTERVAL_DATA_GET_MS    300U * 1000U
-#define INTERVAL_PM_READ_MS     30U  * 1000U

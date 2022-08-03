@@ -4,12 +4,13 @@
 #include <Data.h>
 
 MHZ19 sensor;
-SoftwareSerial co2Serial(D7, D6);
+SoftwareSerial co2Serial(D6, D7);
 
 boolean coinit()
 {
   co2Serial.begin(9600U);    // Uno example: Begin Stream with MHZ19 baudrate
-  sensor.begin(co2Serial);   // *Important, Pass your Stream reference here
+  sensor.begin(co2Serial);
+  sensor.autoCalibration(true, 24U * 7U);
 
   char myVersion[4];
   sensor.getVersion(myVersion);

@@ -19,8 +19,8 @@ void update()
   ESP.wdtFeed();
   ESP.wdtDisable();
   const int luxReading = analogRead(LUX_PIN);
-  // const int TVOCReading = TVOCread();
-  const int TVOCReading = 0;
+  const int TVOCReading = TVOCread();
+  // const int TVOCReading = 0;
   lux.add((float)luxReading * 0.64453125);
   lux30.add((float)luxReading * 0.64453125);
   co2read();
@@ -30,10 +30,10 @@ void update()
   Serial.print(String(" CO2 ") + co2Value + " TVOC " + TVOCReading);
   Serial.println(String(" Backlit ") + backlit + " Lux " + luxReading);
 
-  textToLcd(0, 0, String(insideTemp, 2) + "C " + String(insideHum, 2) + "%");
-  textToLcd(0, 1, "Outside: " + String(outsideTemp, 1) + "C ");
-  textToLcd(0, 2, String(insidePres) + "hPa");
-  textToLcd(0, 3, "CO " + String(co2Value) + "ppm");
+  textToLcd(0, timeStr + " CO2 " + String(co2Value) + "ppm");
+  textToLcd(1, String(insideTemp, 2) + "C " + String(insideHum, 2) + "%");
+  textToLcd(2, "Outside: " + String(outsideTemp, 1) + "C");
+  textToLcd(3, "TVOC " + String(TVOCReading) + "ppm");
 }
 
 Ticker scannerTicker(scanner, INTERVAL_UPDATE_MS, 0, MILLIS);
@@ -51,19 +51,19 @@ void initDevice(const String deviceName, const uint8_t displayLine, const boolea
   Serial.print(deviceName + "... ");
   if (deviceName != "LCD")
   {
-    textToLcd(0, displayLine, deviceName, false);
+    textToLcd(displayLine, deviceName);
   }
   if (init())
   {
     if (deviceName == "LCD") {
-      textToLcd(0, displayLine, "LCD");
+      textToLcd(displayLine, "LCD");
     }
-    textToLcd(10, displayLine, " OK", false);
+    textToLcd(displayLine, deviceName +" OK");
     Serial.println(F("OK"));
   }
   else
   {
-    textToLcd(10, displayLine, " ERROR", false);
+    textToLcd(displayLine, deviceName + " ERROR");
     Serial.println(F("ERROR"));
     status = false;
   }
@@ -101,9 +101,9 @@ void setup()
   initDevice(String("LCD"), 0U, initLcd);
   initDevice(String("MH-Z19B"), 1U, coinit);
   initDevice(String("BME280"), 2U, BME280init);
-  // initDevice(String("CCS811"), 3U, TVOCinit);
-  initDevice(String("WiFi"), 3U, WiFiconnect);
-  // initDevice(String("NTP"), 5U, ntpInit);
+  initDevice(String("CCS811"), 3U, TVOCinit);
+  initDevice(String("WiFi"), 0U, WiFiconnect);
+  initDevice(String("NTP"), 1U, ntpInit);
 
   updateTemp();
   clearLcd();
@@ -117,5 +117,5 @@ void loop()
   updateTicker.update();
   sendDataTicker.update();
   updateTempTicker.update();
-  // ntpTiker.update();
+  ntpTiker.update();
 }
