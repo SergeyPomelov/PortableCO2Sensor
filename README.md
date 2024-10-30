@@ -1,6 +1,12 @@
 # Weather Station
 ![Weather](https://i.ibb.co/4W5jHH2/weather.jpg)
 
+![Repository Top Language](https://img.shields.io/github/languages/top/SergeyPomelov/PortableCO2Sensor)
+![Languages](https://img.shields.io/github/languages/count/SergeyPomelov/PortableCO2Sensor)
+![Github Repository Size](https://img.shields.io/github/repo-size/SergeyPomelov/PortableCO2Sensor)
+![Github Open Issues](https://img.shields.io/github/issues/SergeyPomelov/PortableCO2Sensor)
+![License](https://img.shields.io/badge/license-MIT-green)
+
 Arduino Based Online Weather Station's Firmware.
 
 ### Build
@@ -24,6 +30,3 @@ The source code is verified to be compatible with [Platform IO](https://platform
 - Lux sensor. A photoresistor is enough if it's just for backlit control, not for an accurate light level data.
 - RGB Led Module. Any.
 - Resistors and other common electronic parts.
-
-### Wiring of Base Version
-![Wiring](https://i.ibb.co/D7K6z10/0616039442245.jpg)
